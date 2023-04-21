@@ -86,9 +86,9 @@ mkdir -p build/{binutils,gcc,gdb} install
 # Build binutils
 pushd build/binutils
   ../../binutils/configure $configure_args_common $configure_args_binutils --with-pkgversion="${pkg_version-$USER}"
-  make
-  make html
-  make install install-html DESTDIR=$PWD/../../install
+  make -j 8
+  make -j 8 html
+  make -j 8 install install-html DESTDIR=$PWD/../../install
 popd
 
 # Build gcc and newlib
@@ -96,25 +96,25 @@ pushd build/gcc
   (
     export PATH=$PWD/../../install/usr/local/bin:$PATH
     ../../gcc/configure $configure_args_common $configure_args_gcc --with-pkgversion="${pkg_version-$USER}"
-    make
-    make html
-    make install install-html DESTDIR=$PWD/../../install
+    make -j 8
+    make -j 8 html
+    make -j 8 install install-html DESTDIR=$PWD/../../install
   )
 popd
 
 # Build GDB without python support
 pushd build/gdb
   ../../gdb/configure $configure_args_common $configure_args_gdb_common $configure_args_gdb_nopy --with-pkgversion="${pkg_version-$USER}"
-  make
-  make install DESTDIR=$PWD/../../install
+  make -j 8
+  make -j 8 install DESTDIR=$PWD/../../install
 popd
 
 ## Build GDB with python support, and the HTML documentation.
 pushd build/gdb
   ../../gdb/configure $configure_args_common $configure_args_gdb_common $configure_args_gdb_py --with-pkgversion="${pkg_version-$USER}"
-  make
-  make html
-  make install install-html DESTDIR=$PWD/../../install
+  make -j 8
+  make -j 8 html
+  make -j 8 install install-html DESTDIR=$PWD/../../install
   # Remove *-py versions of run and add-index, which are unnaffected by the added Python support.
   rm $PWD/../../install/usr/local/bin/msp430-elf-run-py*
   rm $PWD/../../install/usr/local/bin/msp430-elf-gdb-add-index-py*
@@ -132,11 +132,11 @@ exit 0
 # To run the testsuites:
 export DEJAGNU=$PWD/dejagnu/site.exp
 pushd build/binutils
-make -k check
+make -j 8 -k check
 popd
 pushd build/gcc
-make -k check
+make -j 8 -k check
 popd
 pushd build/gdb
-make -k check
+make -j 8 -k check
 popd
