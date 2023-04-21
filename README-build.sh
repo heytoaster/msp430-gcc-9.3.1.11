@@ -38,14 +38,15 @@ configure_args_gdb_nopy="--with-python=no"
 configure_args_gdb_py="--with-python=python2.7 --program-prefix=msp430-elf- --program-suffix=-py"
 
 pushd gcc
-  # Download sources for gcc prerequisites (gmp, mpfr, mpc, and isl)
-  (
-    # download_prerequisites requires wget which isn't on macOS
-    wget() {
-      curl -O "$@"
-    }
-    source ./contrib/download_prerequisites
-  )
+  # # Download sources for gcc prerequisites (gmp, mpfr, mpc, and isl)
+  # (
+  #   # download_prerequisites requires wget which isn't on macOS
+  #   wget() {
+  #     curl -O "$@"
+  #   }
+  #   source ./contrib/download_prerequisites
+  # )
+  ./contrib/download_prerequisites
 
   # Create a single source tree for gcc and newlib
   for dir in libgloss newlib; do
