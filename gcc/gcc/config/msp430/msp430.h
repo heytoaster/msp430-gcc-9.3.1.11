@@ -533,3 +533,11 @@ void msp430_register_pre_includes (const char *sysroot, const char *iprefix,
 	  length *= get_attr_length_multiplier (insn);	\
 	}						\
     } while (0)
+
+#define ASM_OUTPUT_DWARF_OFFSET(FILE, SIZE, LABEL, OFFSET, SECTION) \
+    do { \
+        fputs (integer_asm_op ((SIZE), FALSE), FILE); \
+        assemble_name ((FILE), (LABEL)); \
+        if ((OFFSET) != 0) \
+            fprintf ((FILE), "+" HOST_WIDE_INT_PRINT_DEC, (HOST_WIDE_INT) (OFFSET)); \
+    } while (0)
